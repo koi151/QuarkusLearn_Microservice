@@ -7,6 +7,7 @@ import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.logging.Logger;
+import org.koi151.client.NumberProxy;
 import org.koi151.entity.Book;
 
 import java.time.Instant;
@@ -15,6 +16,8 @@ import java.time.Instant;
 @Tag(name = "Book REST endpoint")
 public class BookController {
 
+    @Inject
+    NumberProxy numberProxy;
     @Inject
     Logger logger;
 
@@ -32,7 +35,7 @@ public class BookController {
         @FormParam("genre") String genre
     ) {
         Book book = Book.builder()
-            .isbn13("13-We'll get it later from the Number microservice")
+            .isbn13(numberProxy.generateIsbnNumbers().isbn13)
             .title(title)
             .author(author)
             .yearOfPublication(yearOfPublication)
